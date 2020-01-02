@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Glow Boxes</title>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        #buttons{
+            display: flex;
+            justify-content: center;
+        }
+        #container{
+            display:flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .box {
+            width: 9vw;
+            height: 9vw;
+            background-color: white;
+            border: 1px solid blue;
+        }
+
+        .selected{
+            z-index: 999;
+            box-shadow : 0px 0px 30px #fff;
+        }
+        button{
+            display: inline-block;
+            align-self: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id = "buttons">
+        <button onclick="turnAll()"> All</button>
+        <button onclick="turnRed()"> Red</button>
+        <button onclick="turnGreen()"> Green</button>
+        <button onclick= "turnBlue()"> Blue</button>
+        <button onclick="turnGray()"> Grayscale</button>
+    </div>
+    <div id = "container">
+        <!-- boxes will go here -->
+    </div>
+    
+    <script>
+        var colorScheme = "all";
+
+        function turnAll(){
+            colorScheme='all';
+        }
+        function turnRed(){
+            colorScheme='redScheme';
+        }
+        function turnGreen(){
+            colorScheme='greenScheme';
+        }
+        function turnBlue(){
+            colorScheme='blueScheme';
+        }
+        function turnGray(){
+            colorScheme='grayScale';
+        }
+
+        for (i = 0; i< 50; i++){
+            document.getElementById("container").innerHTML += "<div class='box'></div>";
+        }
+        const SQUARES = document.querySelectorAll(".box");
+        var squares = Array.from(SQUARES);
+
+        for (i = 0; i < squares.length; i++){
+            squares[i].addEventListener("mouseover", (changeColor));
+            squares[i].addEventListener("mouseleave", noGlow);
+        }
+
+        function changeColor(){
+            var num = squares.indexOf(this);
+            squares[num].style.backgroundColor = randomColor(colorScheme);
+            squares[(squares.length - 1)- num].style.backgroundColor = randomColor(colorScheme);
+            squares[(squares.length - 1)- num].style.border = "0px";
+            squares[num].style.border = "0px";
+            squares[num].classList.toggle("selected");
+        }   
+
+        function noGlow(){
+            var num = squares.indexOf(this); 
+            squares[num].classList.toggle("selected");
+        }
+
+        function randomColor(input){
+            if (input == "all"){
+            var red = Math.floor(Math.random() * 255);
+            var green = Math.floor(Math.random() * 255);
+            var blue = Math.floor(Math.random() * 255);
+            }
+
+            if (input == "redScheme"){
+                red = Math.floor(Math.random() * 155+100);
+                green = Math.floor(Math.random() * 50);
+                blue = Math.floor(Math.random() * 50);
+            }
+
+            if (input == "greenScheme"){
+                red = Math.floor(Math.random() * 50);
+                green = Math.floor(Math.random() * 155+100);
+                blue = Math.floor(Math.random() * 50);
+            }
+
+            if (input == "blueScheme"){
+                red = Math.floor(Math.random() * 50);
+                green = Math.floor(Math.random() * 50);
+                blue = Math.floor(Math.random() * 155+100)
+            }
+
+            if (input == "grayScale"){
+                red = Math.floor(Math.random() * 155+100);
+                green = red;
+                blue = red;
+            }
+            output = `RGB(${red}, ${green}, ${blue})`;
+            return output;
+        }
+
+        // function randomRed(){
+        //     red = Math.floor(Math.random() * 255);
+        //     green = Math.floor(Math.random() * 50);
+        //     blue = Math.floor(Math.random() * 50);
+        //     output = `RGB(${red}, ${green}, ${blue})`;
+        //     return output;
+        // }
+
+
+
+    </script>
+</body>
+</html>
